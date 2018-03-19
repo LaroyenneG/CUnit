@@ -124,8 +124,9 @@ void cunit_exec_test() {
     if (arrayLen > 0) {
         free(functionArray);
         for (int i = 0; i < arrayLen; ++i) {
-            free(nameArray);
+            free(nameArray[i]);
         }
+        free(nameArray);
         arrayLen = 0;
     }
 }
