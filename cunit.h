@@ -19,6 +19,9 @@
 
 #define CUNIT_RUN() cunit_exec_test();
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 extern void cunit_assert_true(bool b, const char *file, int line);
 
@@ -32,6 +35,10 @@ cunit_assert_not_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *)
 extern void cunit_exec_test();
 
 extern void cunit_add_function(void(*function)(void), const char *name);
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif //CUNIT_H
