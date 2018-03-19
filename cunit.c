@@ -2,11 +2,12 @@
 // Created by Guillaume LAROYENNE on 19/03/18.
 //
 
-#include <zconf.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <wait.h>
 #include <string.h>
-#include "vector.h"
+#include <stdbool.h>
+#include <zconf.h>
 
 #define SIZE_MAX 500
 
@@ -15,10 +16,9 @@ static char **nameArray = NULL;
 static int arrayLen = 0;
 static char assertName[SIZE_MAX];
 
+static void printErrorValue(const char *message, const char *actual, const char *excepted);
 
-void printErrorValue(const char *message, const char *actual, const char *excepted) {
-    sprintf(assertName, "%s\nExpected :%s\nActual :%s\n", message, actual, excepted);
-}
+static void cunit_assert(bool b);
 
 
 void cunit_add_function(void(*function)(void), const char *name) {
@@ -53,18 +53,6 @@ void cunit_add_function(void(*function)(void), const char *name) {
 }
 
 
-void cunit_assert(bool b) {
-
-    if (!b) {
-        if (strlen(assertName) != 0) {
-            fprintf(stderr, "%s\n", assertName);
-        }
-
-        exit(EXIT_FAILURE);
-    }
-}
-
-
 void cunit_assert_true(bool b) {
 
     printErrorValue("Assert true", "false", "true");
@@ -87,7 +75,10 @@ void cunit_assert_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *
     sprintf(elt2str, "%p", elt2);
 
     printErrorValue("Assert equals", elt1str, elt2str);
-    cunit_assert(pFunction(elt1, elt2));
+
+    if (elt1 != elt2) {
+        cunit_assert(pFunction(elt1, elt2));
+    }
 }
 
 
@@ -133,3 +124,17 @@ void cunit_exec_test() {
 }
 
 
+void printErrorValue(const char *message, const char *actual, const char *excepted) {
+    sprintf(assertName, "%s\nExpected :%s\nActual :%s\n", message, actual, excepted);
+}
+
+void cunit_assert(bool b) {
+
+    if (!b) {
+        if (strlen(assertName) != 0) {
+            fprintf(stderr, "%s\n", assertName);
+        }
+
+        exit(EXIT_FAILURE);
+    }
+}
