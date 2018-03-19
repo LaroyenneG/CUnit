@@ -2,26 +2,36 @@
 // Created by Guillaume LAROYENNE on 19/03/18.
 //
 
-#ifndef GL_LIBRARY_CUNIT_H
-#define GL_LIBRARY_CUNIT_H
-
+#ifndef CUNIT_H
+#define CUNIT_H
 
 #include <stdbool.h>
 
-#define ASSERT_TRUE(b) cunit_assert_true(b);
+#define ASSERT_TRUE(b) cunit_assert_true(b, __FILE__, __LINE__);
 
-#define ASSERT_EQUALS(e1, e2, func) void cunit_assert_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *));
+#define ASSERT_FALSE(b) cunit_assert_false(b, __FILE__, __LINE__);
+
+#define ASSERT_EQUALS(e1, e2, func) cunit_assert_equals(e1, e2, func, __FILE__, __LINE__);
+
+#define ASSERT_NOT_EQUALS(e1, e2, func) cunit_assert_not_equals(e1, e2, func, __FILE__, __LINE__);
+
+#define CUNIT_ADD_TEST_FUNCTION(func, name) cunit_add_function(func, name);
 
 #define CUNIT_RUN() cunit_exec_test();
 
-extern void cunit_add_function(void(*function)(void), const char *name);
 
-extern void cunit_assert_true(bool b);
+extern void cunit_assert_true(bool b, const char *file, int line);
 
-extern void cunit_assert_fase(bool b);
+extern void cunit_assert_false(bool b, const char *file, int line);
 
-extern void cunit_assert_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *));
+extern void cunit_assert_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *), const char *file, int line);
+
+extern void
+cunit_assert_not_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *), const char *file, int line);
 
 extern void cunit_exec_test();
 
-#endif //GL_LIBRARY_CUNIT_H
+extern void cunit_add_function(void(*function)(void), const char *name);
+
+
+#endif //CUNIT_H

@@ -16,10 +16,6 @@ static char **nameArray = NULL;
 static int arrayLen = 0;
 static char assertName[SIZE_MAX];
 
-static void printErrorValue(const char *message, const char *actual, const char *excepted);
-
-static void cunit_assert(bool b);
-
 
 void cunit_add_function(void(*function)(void), const char *name) {
 
@@ -53,37 +49,48 @@ void cunit_add_function(void(*function)(void), const char *name) {
 }
 
 
-void cunit_assert_true(bool b) {
+void cunit_assert(const char *message, const char *expected, const char *actual, const char *file, int line) {
 
-    printErrorValue("Assert true", "false", "true");
-    cunit_assert(b);
+    fprintf(stderr, "%s\n\tExepected\t: %s\n\tActual\t\t: %s\n", message, expected, actual);
+    fprintf(stderr, "at %s:%d\n", file, line);
+
+    exit(EXIT_FAILURE);
 }
 
 
-void cunit_assert_fase(bool b) {
+void cunit_assert_true(bool b, const char *file, int line) {
 
-    printErrorValue("Assert false", "true", "false");
-    cunit_assert(!b);
+    if (!b) {
+        cunit_assert("Assertion Failure", "false", "true", file, line);
+    }
 }
 
-void cunit_assert_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *)) {
 
-    char elt1str[100];
-    char elt2str[100];
+void cunit_assert_false(bool b, const char *file, int line) {
 
-    sprintf(elt1str, "%p", elt1);
-    sprintf(elt2str, "%p", elt2);
+    if (b) {
+        cunit_assert("Assertion Failure", "false", "true", file, line);
+    }
+}
 
-    printErrorValue("Assert equals", elt1str, elt2str);
 
-    if (elt1 != elt2) {
-        cunit_assert(pFunction(elt1, elt2));
+void cunit_assert_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *), const char *file, int line) {
+
+    if (!pFunction(elt1, elt2)) {
+        cunit_assert("Comparison Failure", "false", "true", file, line);
+    }
+}
+
+
+void cunit_assert_not_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *), const char *file, int line) {
+
+    if (pFunction(elt1, elt2)) {
+        cunit_assert("Comparison Failure", "true", "false", file, line);
     }
 }
 
 
 void cunit_exec_test() {
-
 
     memset(assertName, '\0', SIZE_MAX);
 
@@ -107,9 +114,9 @@ void cunit_exec_test() {
         waitpid(pid, &status, 0);
 
         if (status != EXIT_SUCCESS) {
-            printf("[TEST %d %s : failed]\n", i, nameArray[i]);
+            fprintf(stderr, "[TEST %d %s : failed]\n", i, nameArray[i]);
         } else {
-            printf("[TEST %d %s : success]\n", i, nameArray[i]);
+            fprintf(stdout, "[TEST %d %s : success]\n", i, nameArray[i]);
         }
     }
 
@@ -124,17 +131,5 @@ void cunit_exec_test() {
 }
 
 
-void printErrorValue(const char *message, const char *actual, const char *excepted) {
-    sprintf(assertName, "%s\nExpected :%s\nActual :%s\n", message, actual, excepted);
-}
 
-void cunit_assert(bool b) {
 
-    if (!b) {
-        if (strlen(assertName) != 0) {
-            fprintf(stderr, "%s\n", assertName);
-        }
-
-        exit(EXIT_FAILURE);
-    }
-}
