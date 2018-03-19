@@ -1,7 +1,7 @@
 # CUnit
 
 
-
+*Example of use :
 ```c
 
 void test1() {
@@ -18,4 +18,4 @@ int main(void) {
   return 0;
 }
 
-'''
+```
