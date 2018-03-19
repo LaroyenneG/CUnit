@@ -1,9 +1,11 @@
 # CUnit
 
 
-*Example of use :
+Example of use :
 ```c
-
+/*
+  Test fonction
+*/
 void test1() {
   ASSERT_TRUE(1==2);
 }
