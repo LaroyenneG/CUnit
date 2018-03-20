@@ -17,6 +17,12 @@ static int arrayLen = 0;
 static char assertName[SIZE_MAX];
 
 
+static void cunit_assert_error_equals(const char *message, const char *expected, const char *actual, const char *file,
+                                      int line);
+
+static void cunit_assert_error_not_equals(const char *message, const char *actual, const char *file,
+                                          int line);
+
 void cunit_add_function(void(*function)(void), const char *name) {
 
     if (arrayLen == 0) {
@@ -49,9 +55,19 @@ void cunit_add_function(void(*function)(void), const char *name) {
 }
 
 
-void cunit_assert(const char *message, const char *expected, const char *actual, const char *file, int line) {
+void cunit_assert_error_equals(const char *message, const char *expected, const char *actual, const char *file,
+                               int line) {
 
     fprintf(stderr, "%s\n\tExepected\t: %s\n\tActual\t\t: %s\n", message, expected, actual);
+    fprintf(stderr, "at %s:%d\n", file, line);
+
+    exit(EXIT_FAILURE);
+}
+
+void cunit_assert_error_not_equals(const char *message, const char *actual, const char *file,
+                                   int line) {
+
+    fprintf(stderr, "%s\nValues should be different.\tActual : %s\n", message, actual);
     fprintf(stderr, "at %s:%d\n", file, line);
 
     exit(EXIT_FAILURE);
@@ -61,7 +77,7 @@ void cunit_assert(const char *message, const char *expected, const char *actual,
 void cunit_assert_true(bool b, const char *file, int line) {
 
     if (!b) {
-        cunit_assert("Assertion Failure", "false", "true", file, line);
+        cunit_assert_error_equals("Assertion Failure", "false", "true", file, line);
     }
 }
 
@@ -69,7 +85,7 @@ void cunit_assert_true(bool b, const char *file, int line) {
 void cunit_assert_false(bool b, const char *file, int line) {
 
     if (b) {
-        cunit_assert("Assertion Failure", "false", "true", file, line);
+        cunit_assert_error_equals("Assertion Failure", "false", "true", file, line);
     }
 }
 
@@ -77,7 +93,7 @@ void cunit_assert_false(bool b, const char *file, int line) {
 void cunit_assert_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *), const char *file, int line) {
 
     if (!pFunction(elt1, elt2)) {
-        cunit_assert("Comparison Failure", "false", "true", file, line);
+        cunit_assert_error_equals("Comparison Failure", "false", "true", file, line);
     }
 }
 
@@ -85,7 +101,34 @@ void cunit_assert_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *
 void cunit_assert_not_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *), const char *file, int line) {
 
     if (pFunction(elt1, elt2)) {
-        cunit_assert("Comparison Failure", "true", "false", file, line);
+        cunit_assert_error_equals("Comparison Failure", "true", "false", file, line);
+    }
+}
+
+
+void cunit_assert_equals_integer(long expected, long actual, const char *file, int line) {
+
+    char srtExpected[20];
+    char strActual[20];
+
+    sprintf(srtExpected, "%li", expected);
+    sprintf(strActual, "%li", actual);
+
+    if (expected != actual) {
+        cunit_assert_error_equals("Assertion Error", srtExpected, strActual, file, line);
+    }
+}
+
+
+void cunit_assert_not_equals_integer(long expected, long actual, const char *file, int line) {
+
+
+    char strActual[20];
+
+    sprintf(strActual, "%li", actual);
+
+    if (expected != actual) {
+        cunit_assert_error_not_equals("Assertion Error", strActual, file, line);
     }
 }
 
