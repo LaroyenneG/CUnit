@@ -27,6 +27,10 @@
 
 #define ASSERT_NOT_NULL(p) cunit_assert_not_null(p,   __FILE__, __LINE__);
 
+#define ASSERT_EQUALS_REAL(a, b) cunit_assert_equals_real(a, b, __FILE__, __LINE__);
+
+#define ASSERT_NOT_EQUALS_REAL(a, b) cunit_assert_not_equals_real(a, b, __FILE__, __LINE__);
+
 #define CUNIT_ADD_TEST_FUNCTION(func, name) cunit_add_function(func, name);
 
 #define CUNIT_RUN() cunit_exec_test();
@@ -59,6 +63,11 @@ extern void cunit_add_function(void(*function)(void), const char *name);
 extern void cunit_assert_null(void *pVoid, const char *file, int line);
 
 extern void cunit_assert_not_null(void *pVoid, const char *file, int line);
+
+extern void cunit_assert_equals_real(double expected, double actual, const char *file, int line);
+
+extern void cunit_assert_not_equals_real(double expected, double actual, const char *file, int line);
+
 
 #ifdef __cplusplus
 }
