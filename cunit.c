@@ -23,55 +23,15 @@ static void cunit_assert_error_equals(const char *message, const char *expected,
 static void cunit_assert_error_not_equals(const char *message, const char *actual, const char *file,
                                           int line);
 
-void cunit_add_function(void(*function)(void), const char *name) {
+static void cunit_assert_error_null(const char *message, const char *actual, const char *file, int line);
 
-    if (arrayLen == 0) {
-        functionArray = malloc(sizeof(void *));
-        nameArray = malloc(sizeof(char *));
-        if (functionArray == NULL || nameArray == NULL) {
-            perror("realloc()");
-            exit(EXIT_FAILURE);
-        }
+static void cunit_assert_error_not_null(const char *message, const char *file, int line);
 
-    } else {
-        functionArray = realloc(functionArray, sizeof(void *) * (arrayLen + 1));
-        nameArray = realloc(nameArray, sizeof(char *) * (arrayLen + 1));
-        if (functionArray == NULL || nameArray == NULL) {
-            perror("malloc()");
-            exit(EXIT_FAILURE);
-        }
-    }
+static void cunit_exit(const char *file, int line);
 
-    functionArray[arrayLen] = function;
-    nameArray[arrayLen] = malloc(sizeof(char) * (strlen(name)) + 1);
-    if (nameArray[arrayLen] == NULL) {
-        perror("malloc()");
-        exit(EXIT_FAILURE);
-    }
-
-    strcpy(nameArray[arrayLen], name);
-
-    arrayLen++;
-}
-
-
-void cunit_assert_error_equals(const char *message, const char *expected, const char *actual, const char *file,
-                               int line) {
-
-    fprintf(stderr, "%s\n\tExepected\t: %s\n\tActual\t\t: %s\n", message, expected, actual);
-    fprintf(stderr, "at %s:%d\n", file, line);
-
-    exit(EXIT_FAILURE);
-}
-
-void cunit_assert_error_not_equals(const char *message, const char *actual, const char *file,
-                                   int line) {
-
-    fprintf(stderr, "%s\nValues should be different.\tActual : %s\n", message, actual);
-    fprintf(stderr, "at %s:%d\n", file, line);
-
-    exit(EXIT_FAILURE);
-}
+/*
+ * Equals functions
+ */
 
 
 void cunit_assert_true(bool b, const char *file, int line) {
@@ -90,18 +50,21 @@ void cunit_assert_false(bool b, const char *file, int line) {
 }
 
 
+void cunit_assert_null(void *pVoid, const char *file, int line) {
+
+
+    char strPointer[20];
+    sprintf("%p", pVoid);
+
+    if (pVoid != NULL) {
+        cunit_assert_error_null("Assertion Failure", strPointer, file, line);
+    }
+}
+
 void cunit_assert_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *), const char *file, int line) {
 
     if (!pFunction(elt1, elt2)) {
         cunit_assert_error_equals("Comparison Failure", "false", "true", file, line);
-    }
-}
-
-
-void cunit_assert_not_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *), const char *file, int line) {
-
-    if (pFunction(elt1, elt2)) {
-        cunit_assert_error_equals("Comparison Failure", "true", "false", file, line);
     }
 }
 
@@ -120,6 +83,18 @@ void cunit_assert_equals_integer(long expected, long actual, const char *file, i
 }
 
 
+void cunit_assert_equals_string(const char *expected, const char *actual, const char *file, int line) {
+
+    if (strcmp(expected, actual) != 0) {
+        cunit_assert_error_equals("Assertion Error", expected, actual, file, line);
+    }
+}
+
+
+/*
+ * Not equals functions
+ */
+
 void cunit_assert_not_equals_integer(long expected, long actual, const char *file, int line) {
 
 
@@ -131,6 +106,35 @@ void cunit_assert_not_equals_integer(long expected, long actual, const char *fil
         cunit_assert_error_not_equals("Assertion Error", strActual, file, line);
     }
 }
+
+
+void cunit_assert_not_equals_string(const char *expected, const char *actual, const char *file, int line) {
+
+    if (strcmp(expected, actual) == 0) {
+        cunit_assert_error_not_equals("Assertion Error", actual, file, line);
+    }
+}
+
+
+void cunit_assert_not_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *), const char *file, int line) {
+
+    if (pFunction(elt1, elt2)) {
+        cunit_assert_error_equals("Comparison Failure", "true", "false", file, line);
+    }
+}
+
+
+void cunit_assert_not_null(void *pVoid, const char *file, int line) {
+
+    if (pVoid == NULL) {
+        cunit_assert_error_not_null("Assertion Failure", file, line);
+    }
+}
+
+
+/*
+ * Execution functions
+ */
 
 
 void cunit_exec_test() {
@@ -175,5 +179,72 @@ void cunit_exec_test() {
 }
 
 
+void cunit_add_function(void(*function)(void), const char *name) {
+
+    if (arrayLen == 0) {
+        functionArray = malloc(sizeof(void *));
+        nameArray = malloc(sizeof(char *));
+        if (functionArray == NULL || nameArray == NULL) {
+            perror("realloc()");
+            exit(EXIT_FAILURE);
+        }
+
+    } else {
+        functionArray = realloc(functionArray, sizeof(void *) * (arrayLen + 1));
+        nameArray = realloc(nameArray, sizeof(char *) * (arrayLen + 1));
+        if (functionArray == NULL || nameArray == NULL) {
+            perror("malloc()");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    functionArray[arrayLen] = function;
+    nameArray[arrayLen] = malloc(sizeof(char) * (strlen(name)) + 1);
+    if (nameArray[arrayLen] == NULL) {
+        perror("malloc()");
+        exit(EXIT_FAILURE);
+    }
+
+    strcpy(nameArray[arrayLen], name);
+
+    arrayLen++;
+}
 
 
+void cunit_assert_error_equals(const char *message, const char *expected, const char *actual, const char *file,
+                               int line) {
+
+    fprintf(stderr, "%s\n\tExepected\t: %s\n\tActual\t\t: %s\n", message, expected, actual);
+    fprintf(stderr, "at %s:%d\n", file, line);
+
+    exit(EXIT_FAILURE);
+}
+
+
+void cunit_assert_error_not_equals(const char *message, const char *actual, const char *file,
+                                   int line) {
+
+    fprintf(stderr, "%s\nValues should be different.\tActual : %s\n", message, actual);
+
+    cunit_exit(file, line);
+}
+
+
+void cunit_assert_error_null(const char *message, const char *actual, const char *file, int line) {
+
+    fprintf(stderr, "%s\nExpected null, but was:<%s>\n", message, actual);
+
+    cunit_exit(file, line);
+}
+
+void cunit_assert_error_not_null(const char *message, const char *file, int line) {
+
+    fprintf(stderr, "%s\n", message);
+
+    cunit_exit(file, line);
+}
+
+void cunit_exit(const char *file, int line) {
+    fprintf(stderr, "at %s:%d\n", file, line);
+    exit(EXIT_FAILURE);
+}

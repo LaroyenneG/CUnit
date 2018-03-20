@@ -19,6 +19,14 @@
 
 #define ASSERT_NOT_EQUALS(e1, e2, func) cunit_assert_not_equals(e1, e2, func, __FILE__, __LINE__);
 
+#define ASSERT_EQUALS_STRING(s1, s2) cunit_assert_equals_string(s1, s2, __FILE__, __LINE__);
+
+#define ASSERT_NOT_EQUALS_STRING(s1, s2) cunit_assert_not_equals_string(s1, s2, __FILE__, __LINE__);
+
+#define ASSERT_NULL(p) cunit_assert_null(p,  __FILE__, __LINE__);
+
+#define ASSERT_NOT_NULL(p) cunit_assert_not_null(p,   __FILE__, __LINE__);
+
 #define CUNIT_ADD_TEST_FUNCTION(func, name) cunit_add_function(func, name);
 
 #define CUNIT_RUN() cunit_exec_test();
@@ -40,10 +48,17 @@ extern void cunit_assert_equals_integer(long expected, long actual, const char *
 
 extern void cunit_assert_not_equals_integer(long expected, long actual, const char *file, int line);
 
+extern void cunit_assert_not_equals_string(const char *expected, const char *actual, const char *file, int line);
+
+extern void cunit_assert_equals_string(const char *expected, const char *actual, const char *file, int line);
+
 extern void cunit_exec_test();
 
 extern void cunit_add_function(void(*function)(void), const char *name);
 
+extern void cunit_assert_null(void *pVoid, const char *file, int line);
+
+extern void cunit_assert_not_null(void *pVoid, const char *file, int line);
 
 #ifdef __cplusplus
 }
