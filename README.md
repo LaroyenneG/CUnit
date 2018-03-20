@@ -4,7 +4,7 @@
 
 ```c
 /*
-  Test fonction
+  Test function
 */
 void test1() {
   ASSERT_TRUE(1==2);
