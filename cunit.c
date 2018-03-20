@@ -106,6 +106,26 @@ void cunit_assert_equals_real(double expected, double actual, const char *file, 
     }
 }
 
+/*
+void
+cunit_assert_array_equals(void *array1, void *array2, size_t size, const char *file,
+                          int line) {
+
+    char message[100];
+
+    for (size_t i = 0; i < size; ++i) {
+
+        char srtExpected[20];
+        char strActual[20];
+
+
+        if (array1[i] != array2[i]) {
+            sprintf(message, "Arrays first differed at element [%zu]", i);
+            cunit_assert_error_equals(message, "","" , file, line);
+        }
+    }
+}
+*/
 
 /*
  * Not equals functions

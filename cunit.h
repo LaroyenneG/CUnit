@@ -6,6 +6,7 @@
 #define CUNIT_H
 
 #include <stdbool.h>
+#include <stdlib.h>
 
 #define ASSERT_TRUE(b) cunit_assert_true(b, __FILE__, __LINE__);
 
@@ -67,6 +68,7 @@ extern void cunit_assert_not_null(void *pVoid, const char *file, int line);
 extern void cunit_assert_equals_real(double expected, double actual, const char *file, int line);
 
 extern void cunit_assert_not_equals_real(double expected, double actual, const char *file, int line);
+
 
 
 #ifdef __cplusplus
