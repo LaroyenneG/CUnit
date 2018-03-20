@@ -1,7 +1,7 @@
 # CUnit
 
 
-Example of use :
+
 ```c
 /*
   Test fonction
