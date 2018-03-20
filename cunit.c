@@ -99,9 +99,8 @@ void cunit_assert_equals_real(double expected, double actual, const char *file, 
     sprintf(srtExpected, "%lf", expected);
     sprintf(strActual, "%lf", actual);
 
-    double r = (expected - actual) * (expected - actual);
 
-    if (r >= 0.00001) {
+    if (expected != actual) {
         cunit_assert_error_equals("Assertion Error", srtExpected, strActual, file, line);
     }
 }
@@ -174,9 +173,7 @@ void cunit_assert_not_equals_real(double expected, double actual, const char *fi
 
     sprintf(strActual, "%lf", actual);
 
-    double r = (expected - actual) * (expected - actual);
-
-    if (r < 0.00001) {
+    if (expected == actual) {
         cunit_assert_error_not_equals("Assertion Error", strActual, file, line);
     }
 }
@@ -188,6 +185,9 @@ void cunit_assert_not_equals_real(double expected, double actual, const char *fi
 
 
 void cunit_exec_test() {
+
+
+    int testsCont[] = {0, 0, 0};
 
     memset(assertName, '\0', SIZE_MAX);
 
@@ -210,11 +210,16 @@ void cunit_exec_test() {
         int status;
         waitpid(pid, &status, 0);
 
+
         if (status != EXIT_SUCCESS) {
-            fprintf(stderr, "[TEST %d %s : failed]\n", i, nameArray[i]);
+            printf("[TEST N°%d %s : failed]\n", i + 1, nameArray[i]);
+            testsCont[1]++;
         } else {
-            fprintf(stdout, "[TEST %d %s : success]\n", i, nameArray[i]);
+            printf("[TEST N°%d %s : success]\n", i + 1, nameArray[i]);
+            testsCont[2]++;
         }
+
+        testsCont[0]++;
     }
 
 
@@ -226,6 +231,60 @@ void cunit_exec_test() {
         free(nameArray);
         arrayLen = 0;
     }
+
+
+    printf("\nCUnit result :\n");
+    for (int j = 0; j < sizeof(testsCont) / sizeof(int); ++j) {
+
+
+        switch (j) {
+
+            case 0:
+                printf("\x1B[34m");
+                break;
+
+            case 1:
+                printf("\x1B[31m");
+                break;
+
+            case 2:
+                printf("\x1B[32m");
+                break;
+
+            default:
+                exit(EXIT_FAILURE);
+        }
+
+        printf("\t\t\t\t%d ", testsCont[j]);
+
+        if (testsCont[j] < 1) {
+            printf("test ");
+        } else {
+            printf("tests ");
+        }
+
+        switch (j) {
+
+            case 0:
+                printf("done");
+                break;
+
+            case 1:
+                printf("failed");
+                break;
+
+            case 2:
+                printf("passed");
+                break;
+
+            default:
+                exit(EXIT_FAILURE);
+        }
+
+        printf("\x1B[0m\n");
+    }
+
+
 }
 
 
