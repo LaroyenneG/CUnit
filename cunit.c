@@ -9,7 +9,7 @@
 #include <stdbool.h>
 #include <zconf.h>
 
-#define SIZE_MAX 500
+#define SIZE_MAX 1000
 
 static void **functionArray = NULL;
 static char **nameArray = NULL;
@@ -290,6 +290,7 @@ void cunit_exec_test() {
 
 void cunit_add_function(void(*function)(void), const char *name) {
 
+
     if (arrayLen == 0) {
         functionArray = malloc(sizeof(void *));
         nameArray = malloc(sizeof(char *));
@@ -308,6 +309,7 @@ void cunit_add_function(void(*function)(void), const char *name) {
     }
 
     functionArray[arrayLen] = function;
+
     nameArray[arrayLen] = malloc(sizeof(char) * (strlen(name)) + 1);
     if (nameArray[arrayLen] == NULL) {
         perror("malloc()");
