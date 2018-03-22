@@ -1,6 +1,6 @@
 # CUnit
 
-
+A simple library for software testing in C and C ++
 
 ```c
 /*
