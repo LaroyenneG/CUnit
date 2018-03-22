@@ -27,7 +27,10 @@ static void cunit_assert_error_null(const char *message, const char *actual, con
 
 static void cunit_assert_error_not_null(const char *message, const char *file, int line);
 
+static void cunit_assert_error_fail(const char *message, const char *file, int line);
+
 static void cunit_exit(const char *file, int line);
+
 
 /*
  * Equals functions
@@ -176,6 +179,16 @@ void cunit_assert_not_equals_real(double expected, double actual, const char *fi
     if (expected == actual) {
         cunit_assert_error_not_equals("Assertion Error", strActual, file, line);
     }
+}
+
+
+/*
+ * Other test functions
+ */
+
+void cunit_assert_fail(const char *file, int line) {
+
+    cunit_assert_error_fail("Assertion Error", file, line);
 }
 
 
@@ -354,6 +367,14 @@ void cunit_assert_error_not_null(const char *message, const char *file, int line
 
     cunit_exit(file, line);
 }
+
+void cunit_assert_error_fail(const char *message, const char *file, int line) {
+
+    fprintf(stderr, "%s\n", message);
+
+    cunit_exit(file, line);
+}
+
 
 void cunit_exit(const char *file, int line) {
     fprintf(stderr, "at %s:%d\n", file, line);

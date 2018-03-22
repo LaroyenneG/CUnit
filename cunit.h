@@ -32,6 +32,8 @@
 
 #define ASSERT_NOT_EQUALS_REAL(a, b) cunit_assert_not_equals_real(a, b, __FILE__, __LINE__)
 
+#define ASSERT_FAIL() cunit_assert_fail( __FILE__, __LINE__)
+
 #define CUNIT_ADD_TEST_FUNCTION(func, name) cunit_add_function(func, name)
 
 #define CUNIT_RUN() cunit_exec_test()
