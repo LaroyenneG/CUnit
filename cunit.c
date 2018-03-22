@@ -10,7 +10,6 @@
 #include <zconf.h>
 
 #define SIZE_MAX 1000
-#define SIGNAL_FAILED 156
 #define STATUS_TEST_MESSAGE "[TEST N°%d %s : %s]\n"
 
 static void **functionArray = NULL;
@@ -110,26 +109,6 @@ void cunit_assert_equals_real(double expected, double actual, const char *file, 
     }
 }
 
-/*
-void
-cunit_assert_array_equals(void *array1, void *array2, size_t size, const char *file,
-                          int line) {
-
-    char message[100];
-
-    for (size_t i = 0; i < size; ++i) {
-
-        char srtExpected[20];
-        char strActual[20];
-
-
-        if (array1[i] != array2[i]) {
-            sprintf(message, "Arrays first differed at element [%zu]", i);
-            cunit_assert_error_equals(message, "","" , file, line);
-        }
-    }
-}
-*/
 
 /*
  * Not equals functions
@@ -209,6 +188,7 @@ void cunit_exec_test() {
     void (*function)(void);
 
     for (int i = 0; i < arrayLen; ++i) {
+
         function = functionArray[i];
 
         pid_t pid = fork();
@@ -223,20 +203,30 @@ void cunit_exec_test() {
         }
 
         int status;
-        waitpid(pid, &status, 0);
-
-
-        if (status == SIGNAL_FAILED) {
-            printf(STATUS_TEST_MESSAGE, i + 1, nameArray[i], "failed");
-            testsCont[1]++;
-        } else {
-            if (status == EXIT_SUCCESS) {
-                printf(STATUS_TEST_MESSAGE, i + 1, nameArray[i], "success");
-            } else {
-                printf(STATUS_TEST_MESSAGE, i + 1, nameArray[i], "no status");
-            }
-            testsCont[2]++;
+        if (waitpid(pid, &status, 0) < 0) {
+            perror("waitpid()");
+            exit(EXIT_FAILURE);
         }
+
+
+        switch (WEXITSTATUS(status)) {
+
+            case EXIT_FAILURE:
+                printf(STATUS_TEST_MESSAGE, i + 1, nameArray[i], "failed");
+                testsCont[1]++;
+                break;
+
+            case EXIT_SUCCESS:
+                printf(STATUS_TEST_MESSAGE, i + 1, nameArray[i], "success");
+                testsCont[2]++;
+                break;
+
+            default:
+                printf(STATUS_TEST_MESSAGE, i + 1, nameArray[i], "no status");
+                break;
+
+        }
+
         testsCont[0]++;
     }
 
@@ -335,16 +325,18 @@ void cunit_add_function(void(*function)(void), const char *name) {
     }
 
     strcpy(nameArray[arrayLen], name);
-
     arrayLen++;
 }
 
+
+/*
+ * static functions
+ */
 
 void cunit_assert_error_equals(const char *message, const char *expected, const char *actual, const char *file,
                                int line) {
 
     fprintf(stderr, "%s\n\tExepected\t: %s\n\tActual\t\t: %s\n", message, expected, actual);
-
     cunit_exit(file, line);
 }
 
@@ -353,7 +345,6 @@ void cunit_assert_error_not_equals(const char *message, const char *actual, cons
                                    int line) {
 
     fprintf(stderr, "%s\nValues should be different.\tActual : %s\n", message, actual);
-
     cunit_exit(file, line);
 }
 
@@ -361,21 +352,18 @@ void cunit_assert_error_not_equals(const char *message, const char *actual, cons
 void cunit_assert_error_null(const char *message, const char *actual, const char *file, int line) {
 
     fprintf(stderr, "%s\nExpected null, but was:<%s>\n", message, actual);
-
     cunit_exit(file, line);
 }
 
 void cunit_assert_error_not_null(const char *message, const char *file, int line) {
 
     fprintf(stderr, "%s\n", message);
-
     cunit_exit(file, line);
 }
 
 void cunit_assert_error_fail(const char *message, const char *file, int line) {
 
     fprintf(stderr, "%s\n", message);
-
     cunit_exit(file, line);
 }
 
@@ -383,5 +371,5 @@ void cunit_assert_error_fail(const char *message, const char *file, int line) {
 void cunit_exit(const char *file, int line) {
 
     fprintf(stderr, "at %s:%d\n", file, line);
-    exit(SIGNAL_FAILED);
+    exit(EXIT_FAILURE);
 }
