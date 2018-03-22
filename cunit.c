@@ -67,7 +67,7 @@ void cunit_assert_null(void *pVoid, const char *file, int line) {
 
 void cunit_assert_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *), const char *file, int line) {
 
-    if (!pFunction(elt1, elt2)) {
+    if (elt1 != elt2 && !pFunction(elt1, elt2)) {
         cunit_assert_error_equals("Comparison Failure", "false", "true", file, line);
     }
 }
@@ -137,7 +137,7 @@ void cunit_assert_not_equals_string(const char *expected, const char *actual, co
 
 void cunit_assert_not_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *), const char *file, int line) {
 
-    if (pFunction(elt1, elt2)) {
+    if (elt1 == elt2 || pFunction(elt1, elt2)) {
         cunit_assert_error_equals("Comparison Failure", "true", "false", file, line);
     }
 }
