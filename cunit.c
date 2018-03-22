@@ -10,6 +10,8 @@
 #include <zconf.h>
 
 #define SIZE_MAX 1000
+#define SIGNAL_FAILED 156
+#define STATUS_TEST_MESSAGE "[TEST N°%d %s : %s]\n"
 
 static void **functionArray = NULL;
 static char **nameArray = NULL;
@@ -224,14 +226,17 @@ void cunit_exec_test() {
         waitpid(pid, &status, 0);
 
 
-        if (status != EXIT_SUCCESS) {
-            printf("[TEST N°%d %s : failed]\n", i + 1, nameArray[i]);
+        if (status == SIGNAL_FAILED) {
+            printf(STATUS_TEST_MESSAGE, i + 1, nameArray[i], "failed");
             testsCont[1]++;
         } else {
-            printf("[TEST N°%d %s : success]\n", i + 1, nameArray[i]);
+            if (status == EXIT_SUCCESS) {
+                printf(STATUS_TEST_MESSAGE, i + 1, nameArray[i], "success");
+            } else {
+                printf(STATUS_TEST_MESSAGE, i + 1, nameArray[i], "no status");
+            }
             testsCont[2]++;
         }
-
         testsCont[0]++;
     }
 
@@ -339,9 +344,8 @@ void cunit_assert_error_equals(const char *message, const char *expected, const 
                                int line) {
 
     fprintf(stderr, "%s\n\tExepected\t: %s\n\tActual\t\t: %s\n", message, expected, actual);
-    fprintf(stderr, "at %s:%d\n", file, line);
 
-    exit(EXIT_FAILURE);
+    cunit_exit(file, line);
 }
 
 
@@ -377,6 +381,7 @@ void cunit_assert_error_fail(const char *message, const char *file, int line) {
 
 
 void cunit_exit(const char *file, int line) {
+
     fprintf(stderr, "at %s:%d\n", file, line);
-    exit(EXIT_FAILURE);
+    exit(SIGNAL_FAILED);
 }
