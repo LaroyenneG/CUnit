@@ -8,33 +8,33 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#define ASSERT_TRUE(b) cunit_assert_true(b, __FILE__, __LINE__);
+#define ASSERT_TRUE(b) cunit_assert_true(b, __FILE__, __LINE__)
 
-#define ASSERT_FALSE(b) cunit_assert_false(b, __FILE__, __LINE__);
+#define ASSERT_FALSE(b) cunit_assert_false(b, __FILE__, __LINE__)
 
-#define ASSERT_EQUALS_INTEGER(a, b) cunit_assert_equals_integer(a, b,  __FILE__, __LINE__);
+#define ASSERT_EQUALS_INTEGER(a, b) cunit_assert_equals_integer(a, b,  __FILE__, __LINE__)
 
-#define ASSERT_NOT_EQUALS_INTEGER(a, b) cunit_assert_not_equals_integer(a, b,  __FILE__, __LINE__);
+#define ASSERT_NOT_EQUALS_INTEGER(a, b) cunit_assert_not_equals_integer(a, b,  __FILE__, __LINE__)
 
-#define ASSERT_EQUALS(e1, e2, func) cunit_assert_equals(e1, e2, func, __FILE__, __LINE__);
+#define ASSERT_EQUALS(e1, e2, func) cunit_assert_equals(e1, e2, func, __FILE__, __LINE__)
 
-#define ASSERT_NOT_EQUALS(e1, e2, func) cunit_assert_not_equals(e1, e2, func, __FILE__, __LINE__);
+#define ASSERT_NOT_EQUALS(e1, e2, func) cunit_assert_not_equals(e1, e2, func, __FILE__, __LINE__)
 
-#define ASSERT_EQUALS_STRING(s1, s2) cunit_assert_equals_string(s1, s2, __FILE__, __LINE__);
+#define ASSERT_EQUALS_STRING(s1, s2) cunit_assert_equals_string(s1, s2, __FILE__, __LINE__)
 
-#define ASSERT_NOT_EQUALS_STRING(s1, s2) cunit_assert_not_equals_string(s1, s2, __FILE__, __LINE__);
+#define ASSERT_NOT_EQUALS_STRING(s1, s2) cunit_assert_not_equals_string(s1, s2, __FILE__, __LINE__)
 
-#define ASSERT_NULL(p) cunit_assert_null(p,  __FILE__, __LINE__);
+#define ASSERT_NULL(p) cunit_assert_null(p,  __FILE__, __LINE__)
 
-#define ASSERT_NOT_NULL(p) cunit_assert_not_null(p,   __FILE__, __LINE__);
+#define ASSERT_NOT_NULL(p) cunit_assert_not_null(p,   __FILE__, __LINE__)
 
-#define ASSERT_EQUALS_REAL(a, b) cunit_assert_equals_real(a, b, __FILE__, __LINE__);
+#define ASSERT_EQUALS_REAL(a, b) cunit_assert_equals_real(a, b, __FILE__, __LINE__)
 
-#define ASSERT_NOT_EQUALS_REAL(a, b) cunit_assert_not_equals_real(a, b, __FILE__, __LINE__);
+#define ASSERT_NOT_EQUALS_REAL(a, b) cunit_assert_not_equals_real(a, b, __FILE__, __LINE__)
 
-#define CUNIT_ADD_TEST_FUNCTION(func, name) cunit_add_function(func, name);
+#define CUNIT_ADD_TEST_FUNCTION(func, name) cunit_add_function(func, name)
 
-#define CUNIT_RUN() cunit_exec_test();
+#define CUNIT_RUN() cunit_exec_test()
 
 #ifdef __cplusplus
 extern "C" {

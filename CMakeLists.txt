@@ -7,4 +7,5 @@ add_definitions(-g -Wall -x c)
 
 add_library(CUnit
         cunit.c
-        cunit.h)
+        cunit.h
+        )
