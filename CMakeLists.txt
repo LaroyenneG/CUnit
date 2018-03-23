@@ -5,7 +5,6 @@ set(CMAKE_C_STANDARD 99)
 add_definitions(-g -Wall -x c)
 
 
-add_library(CUnit
+add_library(${PROJECT_NAME}
         cunit.c
-        cunit.h
-        )
+        cunit.h)
