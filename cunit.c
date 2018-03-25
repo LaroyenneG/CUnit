@@ -208,7 +208,6 @@ void cunit_exec_test() {
             exit(EXIT_FAILURE);
         }
 
-        sleep(1);
 
         switch (WEXITSTATUS(status)) {
 
@@ -241,57 +240,60 @@ void cunit_exec_test() {
         arrayLen = 0;
     }
 
+    char resultMessage[500];
 
-    printf("\nCUnit result :\n");
+    sprintf(resultMessage, "\nCUnit result :\n");
     for (int j = 0; j < sizeof(testsCont) / sizeof(int); ++j) {
 
         switch (j) {
 
             case 0:
-                printf("\x1B[34m");
+                sprintf(resultMessage, "\x1B[34m");
                 break;
 
             case 1:
-                printf("\x1B[31m");
+                sprintf(resultMessage, "\x1B[31m");
                 break;
 
             case 2:
-                printf("\x1B[32m");
+                sprintf(resultMessage, "\x1B[32m");
                 break;
 
             default:
                 exit(EXIT_FAILURE);
         }
 
-        printf("\t\t\t\t%d ", testsCont[j]);
+        sprintf(resultMessage, "\t\t\t\t%d ", testsCont[j]);
 
         if (testsCont[j] < 1) {
-            printf("test");
+            sprintf(resultMessage, "test");
         } else {
-            printf("tests");
+            sprintf(resultMessage, "tests");
         }
 
-        printf(" ");
+        sprintf(resultMessage, " ");
 
         switch (j) {
 
             case 0:
-                printf("done");
+                sprintf(resultMessage, "done");
                 break;
 
             case 1:
-                printf("failed");
+                sprintf(resultMessage, "failed");
                 break;
 
             case 2:
-                printf("passed");
+                sprintf(resultMessage, "passed");
                 break;
 
             default:
                 exit(EXIT_FAILURE);
         }
 
-        printf("\x1B[0m\n");
+        sprintf(resultMessage, "\x1B[0m\n");
+
+        printf("%s", resultMessage);
 
         fflush(stdout);
     }
