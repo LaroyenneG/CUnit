@@ -71,6 +71,8 @@ extern void cunit_assert_equals_real(double expected, double actual, const char 
 
 extern void cunit_assert_not_equals_real(double expected, double actual, const char *file, int line);
 
+extern void cunit_assert_fail(const char *file, int line);
+
 
 #ifdef __cplusplus
 }
