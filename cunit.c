@@ -15,7 +15,6 @@
 static void **functionArray = NULL;
 static char **nameArray = NULL;
 static int arrayLen = 0;
-static char assertName[SIZE_MAX];
 
 
 static void cunit_assert_error_equals(const char *message, const char *expected, const char *actual, const char *file,
@@ -183,7 +182,6 @@ void cunit_exec_test() {
 
     int testsCont[] = {0, 0, 0};
 
-    memset(assertName, '\0', SIZE_MAX);
 
     void (*function)(void);
 
@@ -241,8 +239,8 @@ void cunit_exec_test() {
     }
 
     char resultMessage[500];
-
     sprintf(resultMessage, "\nCUnit result :\n");
+
     for (int j = 0; j < sizeof(testsCont) / sizeof(int); ++j) {
 
         switch (j) {
@@ -263,7 +261,7 @@ void cunit_exec_test() {
                 exit(EXIT_FAILURE);
         }
 
-        sprintf(resultMessage + strlen(resultMessage), "\t\t\t\t%d ", testsCont[j]);
+        sprintf(&resultMessage[strlen(resultMessage)], "\t\t\t\t%d ", testsCont[j]);
 
         if (testsCont[j] < 1) {
             strcat(resultMessage, "test");
@@ -290,15 +288,13 @@ void cunit_exec_test() {
             default:
                 exit(EXIT_FAILURE);
         }
-
-        strcat(resultMessage, "\x1B[0m\n");
-
-        printf("%s", resultMessage);
-
-        fflush(stdout);
     }
 
+    strcat(resultMessage, "\x1B[0m\n");
 
+    printf("%s", resultMessage);
+
+    fflush(stdout);
 }
 
 
