@@ -288,6 +288,8 @@ void cunit_exec_test() {
             default:
                 exit(EXIT_FAILURE);
         }
+
+        strcat(resultMessage, "\n");
     }
 
     strcat(resultMessage, "\x1B[0m\n");
