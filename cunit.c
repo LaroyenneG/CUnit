@@ -248,50 +248,50 @@ void cunit_exec_test() {
         switch (j) {
 
             case 0:
-                sprintf(resultMessage, "\x1B[34m");
+                strcat(resultMessage, "\x1B[34m");
                 break;
 
             case 1:
-                sprintf(resultMessage, "\x1B[31m");
+                strcat(resultMessage, "\x1B[31m");
                 break;
 
             case 2:
-                sprintf(resultMessage, "\x1B[32m");
+                strcat(resultMessage, "\x1B[32m");
                 break;
 
             default:
                 exit(EXIT_FAILURE);
         }
 
-        sprintf(resultMessage, "\t\t\t\t%d ", testsCont[j]);
+        sprintf(resultMessage + strlen(resultMessage), "\t\t\t\t%d ", testsCont[j]);
 
         if (testsCont[j] < 1) {
-            sprintf(resultMessage, "test");
+            strcat(resultMessage, "test");
         } else {
-            sprintf(resultMessage, "tests");
+            strcat(resultMessage, "tests");
         }
 
-        sprintf(resultMessage, " ");
+        strcat(resultMessage, " ");
 
         switch (j) {
 
             case 0:
-                sprintf(resultMessage, "done");
+                strcat(resultMessage, "done");
                 break;
 
             case 1:
-                sprintf(resultMessage, "failed");
+                strcat(resultMessage, "failed");
                 break;
 
             case 2:
-                sprintf(resultMessage, "passed");
+                strcat(resultMessage, "passed");
                 break;
 
             default:
                 exit(EXIT_FAILURE);
         }
 
-        sprintf(resultMessage, "\x1B[0m\n");
+        strcat(resultMessage, "\x1B[0m\n");
 
         printf("%s", resultMessage);
 
