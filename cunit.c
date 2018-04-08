@@ -109,6 +109,21 @@ void cunit_assert_equals_real(double expected, double actual, const char *file, 
 }
 
 
+void cunit_assert_equals_pointer(void *expected, void *actual, const char *file, int line) {
+
+    char srtExpected[20];
+    char strActual[20];
+
+    sprintf(srtExpected, "%p", expected);
+    sprintf(strActual, "%p", actual);
+
+
+    if (expected != actual) {
+        cunit_assert_error_equals("Assertion Error", srtExpected, strActual, file, line);
+    }
+}
+
+
 /*
  * Not equals functions
  */
@@ -158,6 +173,21 @@ void cunit_assert_not_equals_real(double expected, double actual, const char *fi
 
     if (expected == actual) {
         cunit_assert_error_not_equals("Assertion Error", strActual, file, line);
+    }
+}
+
+
+void cunit_assert_not_equals_pointer(void *expected, void *actual, const char *file, int line) {
+
+    char srtExpected[20];
+    char strActual[20];
+
+    sprintf(srtExpected, "%p", expected);
+    sprintf(strActual, "%p", actual);
+
+
+    if (expected == actual) {
+        cunit_assert_error_equals("Assertion Error", srtExpected, strActual, file, line);
     }
 }
 
