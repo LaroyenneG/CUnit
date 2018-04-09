@@ -12,29 +12,29 @@
 
 #define ASSERT_FALSE(b) cunit_assert_false(b, __FILE__, __LINE__)
 
-#define ASSERT_EQUALS_INTEGER(a, b) cunit_assert_equals_integer(a, b,  __FILE__, __LINE__)
+#define ASSERT_EQUALS_INTEGER(e, a) cunit_assert_equals_integer(e, a,  __FILE__, __LINE__)
 
-#define ASSERT_EQUALS_POINTER(a, b) cunit_assert_equals_pointer(a, b, __FILE__, __LINE__)
+#define ASSERT_EQUALS_POINTER(e, a) cunit_assert_equals_pointer(e, a, __FILE__, __LINE__)
 
-#define ASSERT_NOT_EQUALS_INTEGER(a, b) cunit_assert_not_equals_integer(a, b,  __FILE__, __LINE__)
+#define ASSERT_NOT_EQUALS_INTEGER(e, a) cunit_assert_not_equals_integer(e, a,  __FILE__, __LINE__)
 
 #define ASSERT_EQUALS(e1, e2, func) cunit_assert_equals(e1, e2, func, __FILE__, __LINE__)
 
 #define ASSERT_NOT_EQUALS(e1, e2, func) cunit_assert_not_equals(e1, e2, func, __FILE__, __LINE__)
 
-#define ASSERT_EQUALS_STRING(s1, s2) cunit_assert_equals_string(s1, s2, __FILE__, __LINE__)
+#define ASSERT_EQUALS_STRING(e, a) cunit_assert_equals_string(e, a, __FILE__, __LINE__)
 
-#define ASSERT_NOT_EQUALS_STRING(s1, s2) cunit_assert_not_equals_string(s1, s2, __FILE__, __LINE__)
+#define ASSERT_NOT_EQUALS_STRING(e, a) cunit_assert_not_equals_string(e, a, __FILE__, __LINE__)
 
 #define ASSERT_NULL(p) cunit_assert_null(p,  __FILE__, __LINE__)
 
 #define ASSERT_NOT_NULL(p) cunit_assert_not_null(p,   __FILE__, __LINE__)
 
-#define ASSERT_EQUALS_REAL(a, b) cunit_assert_equals_real(a, b, __FILE__, __LINE__)
+#define ASSERT_EQUALS_REAL(e, a) cunit_assert_equals_real(e, a, __FILE__, __LINE__)
 
-#define ASSERT_NOT_EQUALS_REAL(a, b) cunit_assert_not_equals_real(a, b, __FILE__, __LINE__)
+#define ASSERT_NOT_EQUALS_REAL(e, a) cunit_assert_not_equals_real(e, a, __FILE__, __LINE__)
 
-#define ASSERT_NOT_EQUALS_POINTER(a, b) cunit_assert_not_equals_pointer(a, b, __FILE__, __LINE__)
+#define ASSERT_NOT_EQUALS_POINTER(e, a) cunit_assert_not_equals_pointer(e, a, __FILE__, __LINE__)
 
 #define ASSERT_FAIL() cunit_assert_fail( __FILE__, __LINE__)
 
@@ -65,8 +65,6 @@ extern void cunit_assert_equals_string(const char *expected, const char *actual,
 
 extern void cunit_assert_equals_pointer(void *expected, void *actual, const char *file, int line);
 
-extern void cunit_exec_test();
-
 extern void cunit_add_function(void(*function)(void), const char *name);
 
 extern void cunit_assert_null(void *pVoid, const char *file, int line);
@@ -79,6 +77,7 @@ extern void cunit_assert_not_equals_real(double expected, double actual, const c
 
 extern void cunit_assert_fail(const char *file, int line);
 
+extern void cunit_exec_test();
 
 #ifdef __cplusplus
 }

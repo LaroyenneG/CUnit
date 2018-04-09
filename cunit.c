@@ -9,7 +9,6 @@
 #include <stdbool.h>
 #include <zconf.h>
 
-#define SIZE_MAX 1000
 #define STATUS_TEST_MESSAGE "[TEST N°%d %s : %s]\n"
 
 static void **functionArray = NULL;
