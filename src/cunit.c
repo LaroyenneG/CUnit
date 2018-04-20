@@ -209,7 +209,7 @@ void cunit_assert_fail(const char *file, int line) {
 void cunit_exec_test() {
 
 
-    int testsCont[] = {0, 0, 0};
+    int testsCount[] = {0, 0, 0};
 
 
     void (*function)(void);
@@ -240,12 +240,12 @@ void cunit_exec_test() {
 
             case EXIT_FAILURE:
                 printf(STATUS_TEST_MESSAGE, i + 1, nameArray[i], "failed");
-                testsCont[1]++;
+                testsCount[1]++;
                 break;
 
             case EXIT_SUCCESS:
                 printf(STATUS_TEST_MESSAGE, i + 1, nameArray[i], "success");
-                testsCont[2]++;
+                testsCount[2]++;
                 break;
 
             default:
@@ -254,7 +254,7 @@ void cunit_exec_test() {
 
         }
 
-        testsCont[0]++;
+        testsCount[0]++;
     }
 
 
@@ -270,7 +270,7 @@ void cunit_exec_test() {
     char resultMessage[500];
     sprintf(resultMessage, "\nCUnit result :\n");
 
-    for (int j = 0; j < sizeof(testsCont) / sizeof(int); ++j) {
+    for (int j = 0; j < sizeof(testsCount) / sizeof(int); ++j) {
 
         switch (j) {
 
@@ -290,9 +290,9 @@ void cunit_exec_test() {
                 exit(EXIT_FAILURE);
         }
 
-        sprintf(&resultMessage[strlen(resultMessage)], "\t\t\t\t%d ", testsCont[j]);
+        sprintf(&resultMessage[strlen(resultMessage)], "\t\t\t\t%d ", testsCount[j]);
 
-        if (testsCont[j] < 1) {
+        if (testsCount[j] < 1) {
             strcat(resultMessage, "test");
         } else {
             strcat(resultMessage, "tests");
