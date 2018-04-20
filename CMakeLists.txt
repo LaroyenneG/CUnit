@@ -6,5 +6,5 @@ add_definitions(-g -Wall -x c)
 
 
 add_library(${PROJECT_NAME}
-        cunit.c
-        cunit.h)
+        src/cunit.c
+        src/cunit.h)
