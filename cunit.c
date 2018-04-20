@@ -290,7 +290,7 @@ void cunit_exec_test() {
                 exit(EXIT_FAILURE);
         }
 
-        sprintf(&resultMessage[strlen(resultMessage)], "\t\t\t\t%d ", testsCont[j]);
+        sprintf(&resultMessage[strlen(resultMessage)], "\t\t\t\t%d\t", testsCont[j]);
 
         if (testsCont[j] < 1) {
             strcat(resultMessage, "test");
