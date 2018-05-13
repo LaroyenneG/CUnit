@@ -1,6 +1,6 @@
-//
-// Created by Guillaume LAROYENNE on 19/03/18.
-//
+/*
+ * Created by Guillaume LAROYENNE on 19/03/18.
+ */
 
 #include <stdlib.h>
 #include <stdio.h>
