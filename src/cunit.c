@@ -71,13 +71,13 @@ void cunit_assert_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *
 }
 
 
-void cunit_assert_equals_integer(long expected, long actual, const char *file, int line) {
+void cunit_assert_equals_integer(long long int expected, long long int actual, const char *file, int line) {
 
     char srtExpected[20];
     char strActual[20];
 
-    sprintf(srtExpected, "%li", expected);
-    sprintf(strActual, "%li", actual);
+    sprintf(srtExpected, "%lli", expected);
+    sprintf(strActual, "%lli", actual);
 
     if (expected != actual) {
         cunit_assert_error_equals("Assertion Error", srtExpected, strActual, file, line);
@@ -93,13 +93,13 @@ void cunit_assert_equals_string(const char *expected, const char *actual, const 
 }
 
 
-void cunit_assert_equals_real(double expected, double actual, const char *file, int line) {
+void cunit_assert_equals_real(long double expected, long double actual, const char *file, int line) {
 
     char srtExpected[20];
     char strActual[20];
 
-    sprintf(srtExpected, "%lf", expected);
-    sprintf(strActual, "%lf", actual);
+    sprintf(srtExpected, "%Lf", expected);
+    sprintf(strActual, "%Lf", actual);
 
 
     if (expected != actual) {
@@ -127,12 +127,12 @@ void cunit_assert_equals_pointer(void *expected, void *actual, const char *file,
  * Not equals functions
  */
 
-void cunit_assert_not_equals_integer(long expected, long actual, const char *file, int line) {
+void cunit_assert_not_equals_integer(long long int expected, long long int actual, const char *file, int line) {
 
 
     char strActual[20];
 
-    sprintf(strActual, "%li", actual);
+    sprintf(strActual, "%lli", actual);
 
     if (expected != actual) {
         cunit_assert_error_not_equals("Assertion Error", strActual, file, line);
@@ -164,11 +164,11 @@ void cunit_assert_not_null(void *pVoid, const char *file, int line) {
 }
 
 
-void cunit_assert_not_equals_real(double expected, double actual, const char *file, int line) {
+void cunit_assert_not_equals_real(long double expected, long double actual, const char *file, int line) {
 
     char strActual[20];
 
-    sprintf(strActual, "%lf", actual);
+    sprintf(strActual, "%Lf", actual);
 
     if (expected == actual) {
         cunit_assert_error_not_equals("Assertion Error", strActual, file, line);

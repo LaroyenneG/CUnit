@@ -70,9 +70,9 @@ extern void cunit_assert_equals(void *elt1, void *elt2, bool(*pFunction)(void *,
 extern void
 cunit_assert_not_equals(void *elt1, void *elt2, bool(*pFunction)(void *, void *), const char *file, int line);
 
-extern void cunit_assert_equals_integer(long expected, long actual, const char *file, int line);
+extern void cunit_assert_equals_integer(long long int expected, long long int actual, const char *file, int line);
 
-extern void cunit_assert_not_equals_integer(long expected, long actual, const char *file, int line);
+extern void cunit_assert_not_equals_integer(long long int expected, long long int actual, const char *file, int line);
 
 extern void cunit_assert_not_equals_string(const char *expected, const char *actual, const char *file, int line);
 
@@ -84,9 +84,9 @@ extern void cunit_assert_null(void *pVoid, const char *file, int line);
 
 extern void cunit_assert_not_null(void *pVoid, const char *file, int line);
 
-extern void cunit_assert_equals_real(double expected, double actual, const char *file, int line);
+extern void cunit_assert_equals_real(long double expected, long double actual, const char *file, int line);
 
-extern void cunit_assert_not_equals_real(double expected, double actual, const char *file, int line);
+extern void cunit_assert_not_equals_real(long double expected, long double actual, const char *file, int line);
 
 extern void cunit_assert_fail(const char *file, int line);
 
