@@ -56,7 +56,7 @@ void cunit_assert_null(void *pVoid, const char *file, int line) {
 
 
     char strPointer[20];
-    sprintf("%p", pVoid);
+    sprintf(strPointer, "%p", pVoid);
 
     if (pVoid != NULL) {
         cunit_assert_error_null("Assertion Failure", strPointer, file, line);
