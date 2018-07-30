@@ -13,7 +13,7 @@
 
 static void **functionArray = NULL;
 static char **nameArray = NULL;
-static int arrayLen = 0;
+static size_t arrayLen = 0;
 
 
 static void cunit_assert_error_equals(const char *message, const char *expected, const char *actual, const char *file,
@@ -239,16 +239,19 @@ void cunit_exec_test() {
         switch (WEXITSTATUS(status)) {
 
             case EXIT_FAILURE:
+
                 printf(STATUS_TEST_MESSAGE, i + 1, nameArray[i], "failed");
                 testsCount[1]++;
                 break;
 
             case EXIT_SUCCESS:
+
                 printf(STATUS_TEST_MESSAGE, i + 1, nameArray[i], "success");
                 testsCount[2]++;
                 break;
 
             default:
+
                 printf(STATUS_TEST_MESSAGE, i + 1, nameArray[i], "status");
                 break;
 
@@ -257,17 +260,7 @@ void cunit_exec_test() {
         testsCount[0]++;
     }
 
-
-    if (arrayLen > 0) {
-        free(functionArray);
-        for (int i = 0; i < arrayLen; ++i) {
-            free(nameArray[i]);
-        }
-        free(nameArray);
-        arrayLen = 0;
-    }
-
-    char resultMessage[500];
+    char resultMessage[1000];
     sprintf(resultMessage, "\nCUnit result :\n");
 
     for (int j = 0; j < sizeof(testsCount) / sizeof(int); ++j) {
@@ -326,6 +319,20 @@ void cunit_exec_test() {
     printf("%s", resultMessage);
 
     fflush(stdout);
+
+
+    /*
+     * Free
+     */
+
+    if (arrayLen > 0) {
+        free(functionArray);
+        for (int i = 0; i < arrayLen; ++i) {
+            free(nameArray[i]);
+        }
+        free(nameArray);
+        arrayLen = 0;
+    }
 }
 
 
@@ -336,7 +343,7 @@ void cunit_add_function(void(*function)(void), const char *name) {
         functionArray = malloc(sizeof(void *));
         nameArray = malloc(sizeof(char *));
         if (functionArray == NULL || nameArray == NULL) {
-            perror("realloc()");
+            perror("malloc()");
             exit(EXIT_FAILURE);
         }
 
@@ -344,7 +351,7 @@ void cunit_add_function(void(*function)(void), const char *name) {
         functionArray = realloc(functionArray, sizeof(void *) * (arrayLen + 1));
         nameArray = realloc(nameArray, sizeof(char *) * (arrayLen + 1));
         if (functionArray == NULL || nameArray == NULL) {
-            perror("malloc()");
+            perror("realloc()");
             exit(EXIT_FAILURE);
         }
     }
