@@ -291,7 +291,7 @@ void cunit_exec_test() {
             strcat(resultMessage, "tests");
         }
 
-        strcat(resultMessage, "\t");
+        strcat(resultMessage, " ");
 
         switch (j) {
 
