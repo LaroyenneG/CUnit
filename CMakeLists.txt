@@ -7,4 +7,4 @@ add_definitions(-Wall)
 
 add_library(${PROJECT_NAME} src/cunit.c src/cunit.h)
 
-add_executable(test src/cunit.c src/cunit.h main.c)
+#add_executable(test src/cunit.c src/cunit.h main.c)
