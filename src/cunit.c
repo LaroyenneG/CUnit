@@ -134,7 +134,7 @@ void cunit_assert_not_equals_integer(long long int expected, long long int actua
 
     sprintf(strActual, "%lli", actual);
 
-    if (expected != actual) {
+    if (expected == actual) {
         cunit_assert_error_not_equals("Assertion Error", strActual, file, line);
     }
 }
